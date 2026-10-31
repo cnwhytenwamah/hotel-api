@@ -1,10 +1,13 @@
 import app from "./app";
 import { env } from "./config/env";
 import { connectDatabase, sequelize } from "./config/database";
+import { connectRedis, redisConnection } from "./config/redis";
+import { notificationQueue } from "./queues/notification.queue";
 
 const startServer = async (): Promise<void> => {
   try {
     await connectDatabase();
+    await connectRedis();
 
     const server = app.listen(env.PORT, () => {
       console.log("-----------------------------------");
@@ -20,18 +23,21 @@ const startServer = async (): Promise<void> => {
 
       server.close(async () => {
         try {
+          await notificationQueue.close();
           await sequelize.close();
-          console.log("Database connection closed.");
+          await redisConnection.quit();
+
+          console.log("Database and Redis connections closed.");
           process.exit(0);
         } catch (error) {
-          console.error("Error closing database connection:", error);
+          console.error("Error during server shutdown:", error);
           process.exit(1);
         }
       });
     };
 
-    process.on("SIGTERM", shutdown);
-    process.on("SIGINT", shutdown);
+    process.once("SIGTERM", shutdown);
+    process.once("SIGINT", shutdown);
   } catch (error) {
     console.error("Failed to start Hotel API:", error);
     process.exit(1);
