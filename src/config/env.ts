@@ -21,6 +21,9 @@ const envSchema = z.object({
   DB_PASSWORD: z.string(),
 
   REDIS_URL: z.string().url(),
+
+  JWT_SECRET: z.string().min(32),
+  JWT_EXPIRES_IN: z.string().default("1d"),
 });
 
 const parsedEnv = envSchema.safeParse(process.env);

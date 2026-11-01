@@ -13,7 +13,8 @@
     "db:migrate:undo": "sequelize-cli db:migrate:undo",
     "db:migrate:status": "sequelize-cli db:migrate:status",
     "worker": "tsx src/workers/index.ts",
-    "queue:test": "tsx scripts/test-queue.ts"
+    "queue:test": "tsx scripts/test-queue.ts",
+    "db:test-model": "tsx scripts/test-hotel-model.ts"
   },
   "keywords": [],
   "author": "",
