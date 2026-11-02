@@ -14,14 +14,10 @@ export const authenticate: RequestHandler = async (
     const authorization = req.headers.authorization;
 
     if (!authorization?.startsWith("Bearer ")) {
-      throw new AppError(
-        "Authentication token is required.",
-        401
-      );
+      throw new AppError("Authentication token is required.", 401);
     }
 
     const token = authorization.substring(7);
-
     const decoded = jwt.verify(token, env.JWT_SECRET);
 
     if (
@@ -29,10 +25,7 @@ export const authenticate: RequestHandler = async (
       !decoded.sub ||
       typeof decoded.email !== "string"
     ) {
-      throw new AppError(
-        "Invalid authentication token.",
-        401
-      );
+      throw new AppError("Invalid authentication token.", 401);
     }
 
     const user = await userRepository.findById(decoded.sub);
@@ -47,6 +40,7 @@ export const authenticate: RequestHandler = async (
     req.authUser = {
       id: user.id,
       email: user.email,
+      accountType: user.accountType,
     };
 
     next();
@@ -66,4 +60,22 @@ export const authenticate: RequestHandler = async (
 
     next(error);
   }
+};
+
+export const requireStaff: RequestHandler = (
+  req,
+  _res,
+  next
+) => {
+  if (!req.authUser) {
+    next(new AppError("Authentication is required.", 401));
+    return;
+  }
+
+  if (req.authUser.accountType !== "staff") {
+    next(new AppError("Staff access is required.", 403));
+    return;
+  }
+
+  next();
 };

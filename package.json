@@ -14,7 +14,8 @@
     "db:migrate:status": "sequelize-cli db:migrate:status",
     "worker": "tsx src/workers/index.ts",
     "queue:test": "tsx scripts/test-queue.ts",
-    "db:test-model": "tsx scripts/test-hotel-model.ts"
+    "db:test-model": "tsx scripts/test-hotel-model.ts",
+    "staff:create": "tsx scripts/create-staff.ts"
   },
   "keywords": [],
   "author": "",

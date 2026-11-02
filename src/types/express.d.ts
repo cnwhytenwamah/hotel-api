@@ -4,6 +4,7 @@ declare global {
       authUser?: {
         id: string;
         email: string;
+        accountType: "guest" | "staff";
       };
     }
   }
