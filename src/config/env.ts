@@ -24,6 +24,14 @@ const envSchema = z.object({
 
   JWT_SECRET: z.string().min(32),
   JWT_EXPIRES_IN: z.string().default("1d"),
+
+  REFRESH_TOKEN_EXPIRES_IN: z.string().default("7d"),
+RESEND_API_KEY: z.preprocess(
+  (value) => value === "" ? undefined : value,
+  z.string().optional()
+),
+EMAIL_FROM: z.string().default("Hotel Management <onboarding@resend.dev>"),
+APP_URL: z.string().url().default("http://localhost:3000"),
 });
 
 const parsedEnv = envSchema.safeParse(process.env);

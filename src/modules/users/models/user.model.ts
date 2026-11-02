@@ -23,6 +23,12 @@ export class User extends Model< InferAttributes<User>,  InferCreationAttributes
 
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
+
+  declare emailVerifiedAt: CreationOptional<Date | null>;
+declare emailVerificationTokenHash: CreationOptional<string | null>;
+declare emailVerificationExpiresAt: CreationOptional<Date | null>;
+declare passwordResetTokenHash: CreationOptional<string | null>;
+declare passwordResetExpiresAt: CreationOptional<Date | null>;
 }
 
 User.init(
@@ -77,6 +83,36 @@ User.init(
       allowNull: false,
       defaultValue: "active",
     },
+
+    emailVerifiedAt: {
+  type: DataTypes.DATE,
+  allowNull: true,
+  field: "email_verified_at",
+},
+
+emailVerificationTokenHash: {
+  type: DataTypes.STRING(64),
+  allowNull: true,
+  field: "email_verification_token_hash",
+},
+
+emailVerificationExpiresAt: {
+  type: DataTypes.DATE,
+  allowNull: true,
+  field: "email_verification_expires_at",
+},
+
+passwordResetTokenHash: {
+  type: DataTypes.STRING(64),
+  allowNull: true,
+  field: "password_reset_token_hash",
+},
+
+passwordResetExpiresAt: {
+  type: DataTypes.DATE,
+  allowNull: true,
+  field: "password_reset_expires_at",
+},
 
     lastLoginAt: {
       type: DataTypes.DATE,
