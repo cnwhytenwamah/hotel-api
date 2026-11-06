@@ -3,11 +3,16 @@ import { env } from "./config/env";
 import { connectDatabase, sequelize } from "./config/database";
 import { connectRedis, redisConnection } from "./config/redis";
 import { notificationQueue } from "./queues/notification.queue";
+import "./database";
+import { closeBookingHoldWorker } from "./workers/booking-hold.worker";
+import { bookingHoldQueue } from "./queues/booking-hold.queue";
 
 const startServer = async (): Promise<void> => {
   try {
     await connectDatabase();
     await connectRedis();
+    await closeBookingHoldWorker();
+    await bookingHoldQueue.close();
 
     const server = app.listen(env.PORT, () => {
       console.log("-----------------------------------");

@@ -102,12 +102,4 @@ Room.init(
   }
 );
 
-Room.belongsTo(Hotel, {
-  foreignKey: "hotelId",
-  as: "hotel",
-});
 
-Room.belongsTo(RoomType, {
-  foreignKey: "roomTypeId",
-  as: "roomType",
-});

@@ -146,32 +146,3 @@ RoomType.init(
     underscored: true,
   }
 );
-
-RoomType.belongsTo(Hotel, {
-  foreignKey: "hotelId",
-  as: "hotel",
-});
-
-RoomType.belongsToMany(Amenity, {
-  through: RoomTypeAmenity,
-  foreignKey: "roomTypeId",
-  otherKey: "amenityId",
-  as: "amenities",
-});
-
-Amenity.belongsToMany(RoomType, {
-  through: RoomTypeAmenity,
-  foreignKey: "amenityId",
-  otherKey: "roomTypeId",
-  as: "roomTypes",
-});
-
-RoomType.hasMany(RoomImage, {
-  foreignKey: "roomTypeId",
-  as: "images",
-});
-
-RoomType.hasMany(RoomTypeRate, {
-  foreignKey: "roomTypeId",
-  as: "rates",
-});
